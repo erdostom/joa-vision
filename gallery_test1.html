@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="author" content="Jose Francisco Diaz / picssel.com" />
+<title>Create a filtered image gallery (Isotope style) with Fancybox and jQuery - Part I</title>
+<link rel="stylesheet" type="text/css" href="http://picssel.com/demos/demos.css" />
+<link rel="stylesheet" type="text/css" href="http://picssel.com/scripts/fancybox2.1.5/jquery.fancybox.css" />
+<link rel="stylesheet" type="text/css" href="http://picssel.com/scripts/fancybox2.1.5/helpers/jquery.fancybox-buttons.css" />
+<style type="text/css">
+/* this demo specifc styles */
+.imgContainer {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  text-align: center;
+  margin: 10px 20px 10px 0;
+  float: left;
+  border: solid 1px #999;
+  display: block;
+}
+.imgContainer:hover{
+  border-bottom: solid 1px #444;
+    border-left: solid 1px #444;
+ -webkit-box-shadow: -3px 3px 10px 1px #777;
+    -moz-box-shadow: -3px 3px 10px 1px #777;
+         box-shadow: -3px 3px 10px 1px #777;
+         margin: 9px 19px 11px 1px;
+}
+#galleryTab {
+  margin: 10px 5px 20px 0;
+  top: 26px;
+  width: 450px;
+}
+.galleryWrap {
+  padding: 0 0 30px;
+}
+.filter {
+  border: 1px solid #ccc;
+  color: #333333;
+  float: left;
+  font-size: 12px;
+  margin: 0 12px 0 0;
+  padding: 5px 15px;
+  text-align: center;
+  text-decoration: none;
+ -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+         border-radius: 3px;
+}
+.filter:hover {
+  background-color: #f8f8f8;
+ -webkit-box-shadow: -2px 2px 5px 1px #a3a3a3;
+    -moz-box-shadow: -2px 2px 5px 1px #a3a3a3;
+         box-shadow: -2px 2px 5px 1px #a3a3a3;
+  margin: -1px 11px 1px 1px;
+  border-bottom: solid 1px #aaa;
+  border-left: solid 1px #aaa;
+}
+.filter.active {
+  background-color: #e2e2e2;
+  border: 1px solid #ccc;
+  color: #000;
+  cursor: default;
+  margin: 0 12px 0 0;
+ -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+         box-shadow: none;  
+}
+</style>
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script>window.jQuery || document.write("<script src='http://picssel.com/scripts/jquery-1.8.3.min.js'>\x3C/script>")</script>
+<script src="http://picssel.com/scripts/fancybox2.1.5/jquery.fancybox.pack.js"></script>
+<script src="http://picssel.com/scripts/fancybox2.1.5/helpers/jquery.fancybox-buttons.js"></script>
+<script>
+jQuery(function($){
+  $(".fancybox").fancybox({
+    modal: true,
+    helpers : { buttons: { } }
+  });
+  $(".filter").on("click", function () {
+    var $this = $(this);
+    // if we click the active tab, do nothing
+    if (!$this.hasClass("active")) {
+      $(".filter").removeClass("active");
+      $this.addClass("active"); // set the active tab
+      var $filter = $this.data("rel"); // get the data-rel value from selected tab and set as filter
+      $filter == 'all' ? // if we select "view all", return to initial settings and show all
+        $(".fancybox").attr("data-fancybox-group", "gallery").not(":visible").fadeIn() 
+        : // otherwise
+        $(".fancybox").fadeOut(0).filter(function () { 
+          return $(this).data("filter") == $filter; // set data-filter value as the data-rel value of selected tab
+        }).attr("data-fancybox-group", $filter).fadeIn(1000); // set data-fancybox-group and show filtered elements
+    } // if
+  }); // on
+}); // ready
+</script>
+</head>
+<body>
+<div id="logo"></div>
+<div id="wrap" class="cf">
+<h2>Create a filtered image gallery (Isotope style) with Fancybox and jQuery [DEMO]</h2>
+<div id="galleryTab" class="cf">
+  <a data-rel="all" href="javascript:;" class="filter active">View all</a>
+  <a data-rel="anim" href="javascript:;" class="filter">Animals</a>
+  <a data-rel="land" href="javascript:;" class="filter">Landscapes</a>
+  <a data-rel="arch" href="javascript:;" class="filter">Architecture</a>
+</div>
+<div class="galleryWrap cf">
+<a class='fancybox imgContainer' href='./gallery/architecture/lorenteJerome_barcelona.jpg' data-fancybox-group='gallery' data-filter='arch'><img src='./gallery/thumbs/lorenteJerome_barcelona.jpg' alt='image ./gallery/thumbs/lorenteJerome_barcelona.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/landscape/sarahKlockars_aquatic.jpg' data-fancybox-group='gallery' data-filter='land'><img src='./gallery/thumbs/sarahKlockars_aquatic.jpg' alt='image ./gallery/thumbs/sarahKlockars_aquatic.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/animals/johnEllingsworth_opossum.jpg' data-fancybox-group='gallery' data-filter='anim'><img src='./gallery/thumbs/johnEllingsworth_opossum.jpg' alt='image ./gallery/thumbs/johnEllingsworth_opossum.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/landscape/miroslavVajdic_winter.jpg' data-fancybox-group='gallery' data-filter='land'><img src='./gallery/thumbs/miroslavVajdic_winter.jpg' alt='image ./gallery/thumbs/miroslavVajdic_winter.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/architecture/erikaMlejova_malta.jpg' data-fancybox-group='gallery' data-filter='arch'><img src='./gallery/thumbs/erikaMlejova_malta.jpg' alt='image ./gallery/thumbs/erikaMlejova_malta.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/architecture/antonelloMastinu_italy.jpg' data-fancybox-group='gallery' data-filter='arch'><img src='./gallery/thumbs/antonelloMastinu_italy.jpg' alt='image ./gallery/thumbs/antonelloMastinu_italy.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/animals/chibi_rabbit.jpg' data-fancybox-group='gallery' data-filter='anim'><img src='./gallery/thumbs/chibi_rabbit.jpg' alt='image ./gallery/thumbs/chibi_rabbit.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/landscape/vaughanBourke_skyline.jpg' data-fancybox-group='gallery' data-filter='land'><img src='./gallery/thumbs/vaughanBourke_skyline.jpg' alt='image ./gallery/thumbs/vaughanBourke_skyline.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/animals/danielSteger_deers.jpg' data-fancybox-group='gallery' data-filter='anim'><img src='./gallery/thumbs/danielSteger_deers.jpg' alt='image ./gallery/thumbs/danielSteger_deers.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/landscape/adrianvanLeen_cars.jpg' data-fancybox-group='gallery' data-filter='land'><img src='./gallery/thumbs/adrianvanLeen_cars.jpg' alt='image ./gallery/thumbs/adrianvanLeen_cars.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/landscape/stuartMaxwell_desert.jpg' data-fancybox-group='gallery' data-filter='land'><img src='./gallery/thumbs/stuartMaxwell_desert.jpg' alt='image ./gallery/thumbs/stuartMaxwell_desert.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/landscape/michaelJastremski_autum.jpg' data-fancybox-group='gallery' data-filter='land'><img src='./gallery/thumbs/michaelJastremski_autum.jpg' alt='image ./gallery/thumbs/michaelJastremski_autum.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/animals/stuartMaxwell_cheeta.JPG' data-fancybox-group='gallery' data-filter='anim'><img src='./gallery/thumbs/stuartMaxwell_cheeta.JPG' alt='image ./gallery/thumbs/stuartMaxwell_cheeta.JPG' /></a>
+<a class='fancybox imgContainer' href='./gallery/animals/sarahKlockars_moth.jpg' data-fancybox-group='gallery' data-filter='anim'><img src='./gallery/thumbs/sarahKlockars_moth.jpg' alt='image ./gallery/thumbs/sarahKlockars_moth.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/landscape/erikaMlejova_green.jpg' data-fancybox-group='gallery' data-filter='land'><img src='./gallery/thumbs/erikaMlejova_green.jpg' alt='image ./gallery/thumbs/erikaMlejova_green.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/animals/marekNovotny_puppy.jpg' data-fancybox-group='gallery' data-filter='anim'><img src='./gallery/thumbs/marekNovotny_puppy.jpg' alt='image ./gallery/thumbs/marekNovotny_puppy.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/architecture/michJastremski_penetentiary.jpg' data-fancybox-group='gallery' data-filter='arch'><img src='./gallery/thumbs/michJastremski_penetentiary.jpg' alt='image ./gallery/thumbs/michJastremski_penetentiary.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/architecture/emmanuelSale_gotic.jpg' data-fancybox-group='gallery' data-filter='arch'><img src='./gallery/thumbs/emmanuelSale_gotic.jpg' alt='image ./gallery/thumbs/emmanuelSale_gotic.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/animals/meerkat.jpg' data-fancybox-group='gallery' data-filter='anim'><img src='./gallery/thumbs/meerkat.jpg' alt='image ./gallery/thumbs/meerkat.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/architecture/lorenteJerome_barcelona2.jpg' data-fancybox-group='gallery' data-filter='arch'><img src='./gallery/thumbs/lorenteJerome_barcelona2.jpg' alt='image ./gallery/thumbs/lorenteJerome_barcelona2.jpg' /></a>
+<a class='fancybox imgContainer' href='./gallery/animals/derekKeats_zimbabwe.jpg' data-fancybox-group='gallery' data-filter='anim'><img src='./gallery/thumbs/derekKeats_zimbabwe.jpg' alt='image ./gallery/thumbs/derekKeats_zimbabwe.jpg' /></a>
+<br />
+</div>
+<p style="font-size: 11px; padding: 10px 0"><strong>Disclaimer</strong> : Images belong to their respective authors and are used for demo purposes only. Source <a href="http://openphoto.net/" target="_blank">http://openphoto.net/</a></p>
+</div><!--wrap-->
+<script>
+jQuery(function(e){var t,n,r,i=navigator.userAgent.match(/msie/i)?true:false;if(!document.referrer==""){if(document.referrer.indexOf(location.protocol+"//"+location.host)===0){n=true}}if(history.length==0&&i||history.length==1&&!i){t=false}else{t=true}if(t){if(n){r='<a class="button" href="'+document.referrer+'"> &larr; Go back to previous page </a>'}else{r='<a class="button" href="javascript:;" onclick="javascript: history.go(-1)"> &larr; Go back to previous page </a>'}e(r).appendTo("#wrap")}})
+</script>
+</body>
+</html>
